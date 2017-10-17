@@ -16,6 +16,7 @@
     "postinstall": "gulp update-modepress-def",
     "build": "gulp build",
     "clean": "rimraf dist",
+    "watch-client": "gulp watch-client",
     "patch": "npm version patch --no-git-tag-version",
     "major": "npm version major --no-git-tag-version",
     "minor": "npm version minor --no-git-tag-version",
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/Webinate/modepress-ssr#readme",
   "devDependencies": {
+    "browser-sync": "^2.18.13",
     "mocha": "^3.5.3",
     "puppeteer": "^0.10.2",
     "yargs": "^9.0.1",
@@ -65,6 +67,7 @@
     "ts-loader": "^2.3.7",
     "tslint": "^5.7.0",
     "typescript": "~2.5.2",
-    "webpack": "~3.5.6"
+    "webpack": "~3.5.6",
+    "express": "4.15.3"
   }
 }
