@@ -7,7 +7,10 @@ const tsProject = ts.createProject( 'tsconfig-server.json', { noImplicitAny: tru
 const tsLintProj = ts.createProject( 'tsconfig-lint.json' );
 const browserSync = require( 'browser-sync' ).create();
 const fs = require( 'fs' );
+<<<<<<< HEAD
 var spawn = require( 'child_process' )
+=======
+>>>>>>> 10c3db3218e7b4ef62a8eb8edeaaa797ae624823
 
 const modepressJson = JSON.parse( fs.readFileSync( './modepress.json', { encoding: 'utf8' } ) );
 
@@ -29,6 +32,39 @@ function buildClient( callback ) {
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * Watches the client and reloads the page on successful compilation
+ */
+function watchClient( callback ) {
+
+  // returns a Compiler instance
+  const compiler = webpack( require( './webpack.config.js' ) );
+
+  compiler.watch( { aggregateTimeout: 300, poll: true }, function( err, stats ) {
+
+    console.clear();
+    console.log( '[webpack:build]', stats.toString( {
+      chunks: false, // Makes the build much quieter
+      colors: true
+    } ) );
+
+    if ( err )
+      return;
+
+    var jsonStats = stats.toJson();
+
+    if ( jsonStats.errors.length > 0 || jsonStats.warnings.length > 0 )
+      return;
+    else {
+      console.info( 'Compiled successfully!' );
+      browserSync.reload();
+    }
+  } );
+}
+
+/**
+>>>>>>> 10c3db3218e7b4ef62a8eb8edeaaa797ae624823
  * Builds the server ts code
  */
 function buildServer() {
@@ -162,8 +198,23 @@ function lint() {
     } ) )
 }
 
+<<<<<<< HEAD
 /**
  * Initializes browsersync
+=======
+function initBrowserSync( callback ) {
+  // Initialize browsersync
+  browserSync.init( {
+    proxy: 'localhost:' + modepressJson.server.port,
+    port: modepressJson.server.port
+  } );
+
+  callback();
+}
+
+/*
+ * You can use CommonJS `exports` module notation to declare tasks
+>>>>>>> 10c3db3218e7b4ef62a8eb8edeaaa797ae624823
  */
 function initBrowserSync( callback ) {
   browserSync.init( {
@@ -171,6 +222,7 @@ function initBrowserSync( callback ) {
     port: modepressJson.server.port
   } );
 
+<<<<<<< HEAD
   callback();
 }
 
@@ -181,3 +233,12 @@ gulp.task( 'build', gulp.series( buildServer, gulp.parallel( lint, buildClient, 
 gulp.task( 'default', gulp.series( buildServer, gulp.parallel( lint, buildClient, buildSass, buildStatics ), ) );
 gulp.task( 'watch-client', gulp.series( initBrowserSync, startWatchClient ) );
 gulp.task( 'watch-server', startWatchServer );
+=======
+const build = gulp.series( buildServer, lint, buildClient, gulp.parallel( buildSass, buildStatics ) );
+const watch = gulp.series( initBrowserSync, watchClient );
+
+gulp.task( 'update-modepress-def', updateModepressDef );
+gulp.task( 'build', build );
+gulp.task( 'default', build );
+gulp.task( 'watch-client', watchClient );
+>>>>>>> 10c3db3218e7b4ef62a8eb8edeaaa797ae624823

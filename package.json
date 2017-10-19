@@ -1,6 +1,6 @@
 {
   "name": "modepress-ssr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An admin panel for the Modepress server",
   "main": "index.js",
   "repository": {
@@ -30,8 +30,6 @@
   "homepage": "https://github.com/Webinate/modepress-ssr#readme",
   "devDependencies": {
     "browser-sync": "^2.18.13",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "mocha": "^3.5.3",
     "puppeteer": "^0.10.2",
     "rimraf": "~2.6.2",
     "yargs": "^9.0.1"
@@ -72,6 +70,7 @@
     "ts-loader": "^2.3.7",
     "tslint": "^5.7.0",
     "typescript": "~2.5.2",
-    "webpack": "~3.5.6"
+    "webpack": "~3.5.6",
+    "express": "4.15.3"
   }
 }
