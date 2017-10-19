@@ -13,6 +13,30 @@
         "run",
         "build"
       ]
+    },
+    {
+      "taskName": "watch server",
+      "isBuildCommand": false,
+      "isBackground": true,
+      "showOutput": "always",
+      "problemMatcher": "$tsc",
+      "suppressTaskName": true,
+      "args": [
+        "run",
+        "watch-server"
+      ]
+    },
+    {
+      "taskName": "watch client",
+      "isBuildCommand": false,
+      "isBackground": true,
+      "showOutput": "always",
+      "problemMatcher": "$tsc",
+      "suppressTaskName": true,
+      "args": [
+        "run",
+        "watch-client"
+      ]
     }
   ]
 }
