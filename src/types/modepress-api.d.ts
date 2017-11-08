@@ -776,6 +776,8 @@ declare module 'modepress' {
 }
 declare module 'modepress' {
     interface IResponse {
+    }
+    interface ISimpleResponse extends IResponse {
         message: string;
     }
     interface IRemoveResponse extends IResponse {
@@ -786,8 +788,9 @@ declare module 'modepress' {
         }>;
     }
     interface IAuthenticationResponse extends IResponse {
+        message: string;
         authenticated: boolean;
-        user?: IUserEntry;
+        user?: IUserEntry | null;
     }
     interface IUploadTextResponse extends IResponse {
         token: IUploadToken;
@@ -796,14 +799,14 @@ declare module 'modepress' {
         token: IUploadToken;
     }
     interface IUploadResponse extends IResponse {
+        message: string;
         tokens: Array<IUploadToken>;
     }
-    interface IGetResponse<T> extends IResponse {
-        data: T;
-    }
-    interface IGetArrayResponse<T> extends IResponse {
+    interface Page<T> {
         count: number;
         data: Array<T>;
+        index: number;
+        limit: number;
     }
     namespace AuthTokens {
         /** GET /auth/authenticated */
@@ -814,7 +817,7 @@ declare module 'modepress' {
         /** GET /auth/logout */
         namespace Logout {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** GET /auth/activate-account */
         namespace ActivateAccount {
@@ -834,34 +837,34 @@ declare module 'modepress' {
         /** PUT /auth/password-reset */
         namespace PasswordReset {
             type Body = void;
-            type Response = IResponse;
+            type Response = ISimpleResponse;
         }
         /** PUT /auth/:user/approve-activation */
         namespace ApproveActivation {
             type Body = void;
-            type Response = IResponse;
+            type Response = ISimpleResponse;
         }
         /** GET /auth/:user/resend-activation */
         namespace ResendActivation {
             type Body = void;
-            type Response = IResponse;
+            type Response = ISimpleResponse;
         }
         /** GET /auth/:user/request-password-reset */
         namespace RequestPasswordReset {
             type Body = void;
-            type Response = IResponse;
+            type Response = ISimpleResponse;
         }
     }
     namespace UserTokens {
         /** GET /users/ */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<IUserEntry>;
+            type Response = Page<IUserEntry>;
         }
         /** POST /users/ */
         namespace Post {
             type Body = IUserEntry;
-            type Response = IGetResponse<IUserEntry>;
+            type Response = IUserEntry;
         }
         /** GET /users/:user/meta */
         namespace GetUserMeta {
@@ -876,29 +879,29 @@ declare module 'modepress' {
         /** GET /users/:username */
         namespace GetOne {
             type Body = void;
-            type Response = IGetResponse<IUserEntry>;
+            type Response = IUserEntry;
         }
         /** DELETE /users/:username */
         namespace DeleteOne {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** POST /users/:user/meta/:name */
         namespace PostUserMeta {
             type Body = any;
-            type Response = IResponse;
+            type Response = void;
         }
         /** POST /users/:user/meta */
         namespace PostUserMetaVal {
             type Body = any;
-            type Response = IResponse;
+            type Response = void;
         }
     }
     namespace StatTokens {
         /** GET /stats/users/:user/get-stats */
         namespace GetOne {
             type Body = void;
-            type Response = IGetResponse<IStorageStats>;
+            type Response = IStorageStats;
         }
         /** POST /stats/create-stats/:target */
         namespace Post {
@@ -908,41 +911,41 @@ declare module 'modepress' {
         /** PUT /stats/storage-calls/:target/:value */
         namespace PutStorageCalls {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** PUT /stats/storage-memory/:target/:value */
         namespace PutStorageMemory {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** PUT /stats/storage-allocated-calls/:target/:value */
         namespace PutStorageAlocCalls {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** PUT /stats/storage-allocated-memory/:target/:value */
         namespace PutStorageAlocMemory {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
     }
     namespace SessionTokens {
         /** GET /sessions/ */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<ISessionEntry>;
+            type Response = Page<ISessionEntry>;
         }
         /** DELETE /sessions/:id */
         namespace DeleteOne {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
     }
     namespace PostTokens {
         /** GET /posts/ */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<IPost>;
+            type Response = Page<IPost>;
         }
         /**
          * GET /posts/slug/:slug or
@@ -950,114 +953,114 @@ declare module 'modepress' {
          * */
         namespace GetOne {
             type Body = void;
-            type Response = IGetResponse<IPost>;
+            type Response = IPost;
         }
         /** DELETE /posts/:id */
         namespace DeleteOne {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** PUT /posts/:id */
         namespace PutOne {
             type Body = IPost;
-            type Response = IResponse;
+            type Response = IPost;
         }
         /** POST /posts/ */
         namespace Post {
             type Body = IPost;
-            type Response = IGetResponse<IPost>;
+            type Response = IPost;
         }
     }
     namespace CommentTokens {
         /** GET /comments/ */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<IComment>;
+            type Response = Page<IComment>;
         }
         /** GET /comments/:id */
         namespace GetOne {
             type Body = void;
-            type Response = IGetResponse<IComment>;
+            type Response = IComment;
         }
         /** DELETE /comments/:id */
         namespace DeleteOne {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** PUT /comments/:id */
         namespace PutOne {
             type Body = IComment;
-            type Response = IResponse;
+            type Response = IComment;
         }
         /** POST /posts/:postId/comments/:parent? */
         namespace Post {
             type Body = IComment;
-            type Response = IGetResponse<IComment>;
+            type Response = IComment;
         }
     }
     namespace CategoriesTokens {
         /** GET /categories/ */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<ICategory>;
+            type Response = Page<ICategory>;
         }
         /** DELETE /categories/:id */
         namespace DeleteOne {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** POST /categories */
         namespace Post {
             type Body = ICategory;
-            type Response = IGetResponse<ICategory>;
+            type Response = ICategory;
         }
     }
     namespace RenderTokens {
         /** GET /renders/ */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<IRender>;
+            type Response = Page<IRender>;
         }
         /** DELETE /renders/:id */
         namespace DeleteOne {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
         /** DELETE /renders/clear */
         namespace DeleteAll {
             type Body = void;
-            type Response = IResponse;
+            type Response = void;
         }
     }
     namespace FileTokens {
         /** GET /files/users/:user/buckets/:bucket */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<IFileEntry>;
+            type Response = Page<IFileEntry>;
         }
         /** PUT /files/:file/rename-file */
         namespace Put {
             type Body = {
                 name: string;
             };
-            type Response = IResponse;
+            type Response = IFileEntry;
         }
         /** DELETE /files/:files */
         namespace DeleteAll {
             type Body = void;
-            type Response = IGetArrayResponse<string>;
+            type Response = Page<string>;
         }
     }
     namespace BucketTokens {
         /** GET /buckets/user/:user */
         namespace GetAll {
             type Body = void;
-            type Response = IGetArrayResponse<IBucketEntry>;
+            type Response = Page<IBucketEntry>;
         }
         /** POST /buckets/user/:user/:name */
         namespace Post {
             type Body = void;
-            type Response = IResponse;
+            type Response = IBucketEntry;
         }
         /** POST /buckets/:bucket/upload/:parentFile? */
         namespace PostFile {
@@ -1067,7 +1070,7 @@ declare module 'modepress' {
         /** DELETE /buckets/:buckets */
         namespace DeleteAll {
             type Body = void;
-            type Response = IGetArrayResponse<string>;
+            type Response = Page<string>;
         }
     }
     namespace EmailTokens {
@@ -1797,7 +1800,7 @@ declare module "models/users-model" {
         constructor();
     }
 }
-declare module "core/controller-factory" {
+declare module "core/model-factory" {
     import { IConfig, IModelEntry } from 'modepress';
     import { Db, Collection } from 'mongodb';
     import { Model } from "models/model";
@@ -1813,15 +1816,15 @@ declare module "core/controller-factory" {
     /**
      * Factory classs for creating & getting models
      */
-    export class ControllerFactory {
+    export class ModelFactory {
         private _config;
         private _db;
-        private _controllers;
+        private _models;
         initialize(config: IConfig, database: Db): void;
         /**
-         * Adds the default controllers to the system
+         * Adds the default models to the system
          */
-        addBaseControllers(): Promise<void>;
+        addBaseModelFactories(): Promise<void>;
         /**
          * Sets up a model's indices
          * @param model The model to setup
@@ -1838,12 +1841,12 @@ declare module "core/controller-factory" {
         get(type: 'users'): UsersModel;
         get(type: string): Model<IModelEntry>;
         /**
-         * A factory method for creating controllers
-         * @param type The type of controller to create
+         * A factory method for creating models
+         * @param type The type of model to create
          */
         private create(type);
     }
-    const _default: ControllerFactory;
+    const _default: ModelFactory;
     export default _default;
 }
 declare module "models/model" {
@@ -1939,12 +1942,12 @@ declare module "models/model" {
         insert(instances: Schema<IModelEntry>[]): Promise<Schema<IModelEntry>[]>;
     }
 }
-declare module "controllers/controller" {
+declare module "serializers/serializer" {
     import { Model } from "models/model";
     import * as mongodb from 'mongodb';
     import * as express from 'express';
     import { IModelEntry } from 'modepress';
-    export class Controller {
+    export class Serializer {
         private _models;
         constructor(models: Model<IModelEntry>[] | null);
         /**
@@ -2099,7 +2102,7 @@ declare module "core/session" {
         private pad(n);
     }
 }
-declare module "core/session-manager" {
+declare module "controllers/sessions" {
     import { EventEmitter } from 'events';
     import { ISessionEntry, ISession } from 'modepress';
     import { ServerRequest, ServerResponse } from 'http';
@@ -2108,7 +2111,7 @@ declare module "core/session-manager" {
     /**
     * A class that manages session data for active users
      */
-    export class SessionManager extends EventEmitter {
+    export class SessionsController extends EventEmitter {
         private static _singleton;
         private _sessions;
         private _users;
@@ -2171,11 +2174,11 @@ declare module "core/session-manager" {
         /**
          * Creates the singlton
          */
-        static create(sessionCollection: Collection, userCollection: Collection, options: ISession): SessionManager;
+        static create(sessionCollection: Collection, userCollection: Collection, options: ISession): SessionsController;
         /**
          * Gets the singleton
          */
-        static readonly get: SessionManager;
+        static readonly get: SessionsController;
     }
 }
 declare module "socket-api/client-connection" {
@@ -2354,14 +2357,14 @@ declare module "core/remotes/local-bucket" {
     }
     export const localBucket: LocalBucket;
 }
-declare module "core/bucket-manager" {
+declare module "controllers/buckets" {
     import { IConfig, IBucketEntry, IFileEntry, IStorageStats } from 'modepress';
     import { Collection } from 'mongodb';
     import { Part } from 'multiparty';
     /**
-     * Class responsible for managing buckets and uploads to Google storage
+     * Class responsible for managing buckets and uploads
      */
-    export class BucketManager {
+    export class BucketsController {
         private static MEMORY_ALLOCATED;
         private static API_CALLS_ALLOCATED;
         private static _singleton;
@@ -2429,7 +2432,7 @@ declare module "core/bucket-manager" {
          * @param name The name of the bucket
          * @param user The user associated with this bucket
          */
-        createBucket(name: string, user: string): Promise<void>;
+        createBucket(name: string, user: string): Promise<IBucketEntry>;
         /**
          * Attempts to remove buckets of the given search result. This will also update the file and stats collection.
          * @param searchQuery A valid mongodb search query
@@ -2540,11 +2543,11 @@ declare module "core/bucket-manager" {
         /**
          * Creates the bucket manager singleton
          */
-        static create(buckets: Collection, files: Collection, stats: Collection, config: IConfig): BucketManager;
+        static create(buckets: Collection, files: Collection, stats: Collection, config: IConfig): BucketsController;
         /**
          * Gets the bucket singleton
          */
-        static readonly get: BucketManager;
+        static readonly get: BucketsController;
     }
 }
 declare module "mailers/gmail" {
@@ -2618,7 +2621,7 @@ declare module "mailers/mailgun" {
         sendMail(to: string, from: string, subject: string, msg: string): Promise<boolean>;
     }
 }
-declare module "core/user-manager" {
+declare module "controllers/users" {
     import { IUserEntry, IConfig } from 'modepress';
     import { Collection } from 'mongodb';
     import { ServerRequest, ServerResponse } from 'http';
@@ -2628,7 +2631,7 @@ declare module "core/user-manager" {
     /**
      * Main class to use for managing users
      */
-    export class UserManager {
+    export class UsersController {
         private static _singleton;
         private _collection;
         private _config;
@@ -2805,11 +2808,11 @@ declare module "core/user-manager" {
         /**
          * Creates the user manager singlton
          */
-        static create(users: Collection, config: IConfig): UserManager;
+        static create(users: Collection, config: IConfig): UsersController;
         /**
          * Gets the user manager singlton
          */
-        static readonly get: UserManager;
+        static readonly get: UsersController;
     }
 }
 declare module "utils/errors" {
@@ -2842,7 +2845,7 @@ declare module "utils/errors" {
         constructor(message: string);
     }
 }
-declare module "utils/serializers" {
+declare module "utils/response-decorators" {
     import { IResponse } from 'modepress';
     import * as express from 'express';
     /**
@@ -2851,7 +2854,7 @@ declare module "utils/serializers" {
      * a 200 response code.
      * @param errCode The type of error code to raise for errors
      */
-    export function j200(errCode?: number): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
+    export function j200(code?: number, errCode?: number): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
     /**
      * Helper function to return a status 200 json object of type T
      */
@@ -2866,7 +2869,7 @@ declare module "utils/permission-controllers" {
     import * as express from 'express';
     import { UserPrivileges } from "core/user";
     /**
-     * Checks for an id parameter and that its a valid mongodb ID. Returns an error of type IResponse if no ID is detected, or its invalid
+     * Checks for an id parameter and that its a valid mongodb ID. Returns an error of type IMessage if no ID is detected, or its invalid
      * @param idName The name of the ID to check for
      * @param optional If true, then an error wont be thrown if it doesnt exist
      */
@@ -2901,15 +2904,15 @@ declare module "utils/permission-controllers" {
      */
     export function requestHasPermission(level: UserPrivileges, req: IAuthReq, res: express.Response, existingUser?: string): Promise<boolean>;
 }
-declare module "controllers/admin-controller" {
+declare module "serializers/admin-serializer" {
     import express = require('express');
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     import * as mongodb from 'mongodb';
     /**
      * Main class to use for managing users
      */
-    export class AdminController extends Controller {
+    export class AdminSerializer extends Serializer {
         private _options;
         constructor(options: IBaseControler);
         /**
@@ -2922,15 +2925,15 @@ declare module "controllers/admin-controller" {
         private messageWebmaster(req, res);
     }
 }
-declare module "controllers/bucket-controller" {
+declare module "serializers/bucket-serializer" {
     import express = require('express');
     import * as mongodb from 'mongodb';
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     /**
      * Main class to use for managing users
      */
-    export class BucketController extends Controller {
+    export class BucketSerializer extends Serializer {
         private _allowedFileTypes;
         private _options;
         /**
@@ -2951,8 +2954,8 @@ declare module "controllers/bucket-controller" {
         private getBuckets(req, res);
         private alphaNumericDashSpace(str);
         /**
-       * Creates a new user bucket based on the target provided
-       */
+         * Creates a new user bucket based on the target provided
+         */
         private createBucket(req, res);
         /**
          * Checks if a part is allowed to be uploaded
@@ -2980,15 +2983,15 @@ declare module "controllers/bucket-controller" {
         private finalizeUploads(meta, files, user, tokens);
     }
 }
-declare module "controllers/comments-controller" {
+declare module "serializers/comments-serializer" {
     import * as mongodb from 'mongodb';
     import * as express from 'express';
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     /**
      * A controller that deals with the management of comments
      */
-    export class CommentsController extends Controller {
+    export class CommentsSerializer extends Serializer {
         private _options;
         /**
            * Creates a new instance of the controller
@@ -3020,15 +3023,15 @@ declare module "controllers/comments-controller" {
         private create(req, res);
     }
 }
-declare module "controllers/cors-controller" {
-    import { Controller } from "controllers/controller";
+declare module "serializers/cors-serializer" {
+    import { Serializer } from "serializers/serializer";
     import * as express from 'express';
     import * as mongodb from 'mongodb';
     import { IBaseControler } from 'modepress';
     /**
      * Checks all incomming requests to see if they are CORS approved
      */
-    export class CORSController extends Controller {
+    export class CORSSerializer extends Serializer {
         private _approvedDomains;
         private _options;
         /**
@@ -3041,12 +3044,12 @@ declare module "controllers/cors-controller" {
         initialize(e: express.Express, db: mongodb.Db): Promise<this>;
     }
 }
-declare module "controllers/emails-controller" {
+declare module "serializers/emails-serializer" {
     import * as express from 'express';
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     import * as mongodb from 'mongodb';
-    export class EmailsController extends Controller {
+    export class EmailsSerializer extends Serializer {
         private _options;
         /**
            * Creates a new instance of the email controller
@@ -3062,14 +3065,14 @@ declare module "controllers/emails-controller" {
         protected onPost(req: express.Request, res: express.Response): any;
     }
 }
-declare module "controllers/error-controller" {
-    import { Controller } from "controllers/controller";
+declare module "serializers/error-serializer" {
+    import { Serializer } from "serializers/serializer";
     import express = require('express');
     import * as mongodb from 'mongodb';
     /**
      * Handles express errors
      */
-    export class ErrorController extends Controller {
+    export class ErrorSerializer extends Serializer {
         /**
        * Creates an instance
        */
@@ -3080,15 +3083,15 @@ declare module "controllers/error-controller" {
         initialize(e: express.Express, db: mongodb.Db): Promise<this>;
     }
 }
-declare module "controllers/file-controller" {
+declare module "serializers/file-serializer" {
     import express = require('express');
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IFileOptions } from 'modepress';
     import * as mongodb from 'mongodb';
     /**
      * Main class to use for managing users
      */
-    export class FileController extends Controller {
+    export class FileSerializer extends Serializer {
         private _allowedFileTypes;
         private _cacheLifetime;
         private _options;
@@ -3114,16 +3117,16 @@ declare module "controllers/file-controller" {
         private getFiles(req, res);
     }
 }
-declare module "controllers/page-renderer" {
+declare module "serializers/page-serializer" {
     import * as mongodb from 'mongodb';
     import * as express from 'express';
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IRenderOptions } from 'modepress';
     /**
      * Sets up a prerender server and saves the rendered html requests to mongodb.
      * These saved HTML documents can then be sent to web crawlers who cannot interpret javascript.
      */
-    export class PageRenderer extends Controller {
+    export class PageSerializer extends Serializer {
         private renderQueryFlag;
         private expiration;
         private _options;
@@ -3175,15 +3178,15 @@ declare module "controllers/page-renderer" {
         private clearRenders(req, res);
     }
 }
-declare module "controllers/posts-controller" {
+declare module "serializers/posts-serializer" {
     import * as mongodb from 'mongodb';
     import * as express from 'express';
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     /**
      * A controller that deals with the management of posts
      */
-    export class PostsController extends Controller {
+    export class PostsSerializer extends Serializer {
         private _options;
         /**
            * Creates a new instance of the controller
@@ -3215,15 +3218,15 @@ declare module "controllers/posts-controller" {
         private createPost(req, res);
     }
 }
-declare module "controllers/categories-controller" {
+declare module "serializers/categories-serializer" {
     import * as mongodb from 'mongodb';
     import * as express from 'express';
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     /**
      * A controller that deals with the management of categories
      */
-    export class CategoriesController extends Controller {
+    export class CategoriesSerializer extends Serializer {
         private _options;
         /**
            * Creates a new instance of the controller
@@ -3247,15 +3250,15 @@ declare module "controllers/categories-controller" {
         private createCategory(req, res);
     }
 }
-declare module "controllers/session-controller" {
+declare module "serializers/session-serializer" {
     import express = require('express');
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     import * as mongodb from 'mongodb';
     /**
      * Main class to use for managing users
      */
-    export class SessionController extends Controller {
+    export class SessionSerializer extends Serializer {
         private _options;
         /**
            * Creates an instance of the user manager
@@ -3275,15 +3278,15 @@ declare module "controllers/session-controller" {
         private deleteSession(req, res);
     }
 }
-declare module "controllers/stats-controller" {
+declare module "serializers/stats-serializer" {
     import { IBaseControler } from 'modepress';
     import express = require('express');
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import * as mongodb from 'mongodb';
     /**
      * Main class to use for managing users
      */
-    export class StatsController extends Controller {
+    export class StatsSerializer extends Serializer {
         private _allowedFileTypes;
         private _options;
         /**
@@ -3326,15 +3329,15 @@ declare module "controllers/stats-controller" {
         private createStats(req, res);
     }
 }
-declare module "controllers/user-controller" {
+declare module "serializers/user-serializer" {
     import express = require('express');
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IBaseControler } from 'modepress';
     import * as mongodb from 'mongodb';
     /**
      * Main class to use for managing user data
      */
-    export class UserController extends Controller {
+    export class UserSerializer extends Serializer {
         private _options;
         /**
            * Creates an instance of the user manager
@@ -3381,15 +3384,15 @@ declare module "controllers/user-controller" {
         private createUser(req, res);
     }
 }
-declare module "controllers/auth-controller" {
+declare module "serializers/auth-serializer" {
     import express = require('express');
-    import { Controller } from "controllers/controller";
+    import { Serializer } from "serializers/serializer";
     import { IAuthOptions } from 'modepress';
     import * as mongodb from 'mongodb';
     /**
      * Main class to use for managing user authentication
      */
-    export class AuthController extends Controller {
+    export class AuthSerializer extends Serializer {
         private _options;
         /**
            * Creates an instance of the user manager
@@ -3438,48 +3441,50 @@ declare module "controllers/auth-controller" {
     }
 }
 declare module "modepress-api" {
-    import * as _Controller from "controllers/controller";
-    import * as users from "core/user-manager";
-    import * as bucketManager from "core/bucket-manager";
+    import * as _Controller from "serializers/serializer";
+    import * as users from "controllers/users";
+    import * as bucketManager from "controllers/buckets";
     import * as _Models from "models/model";
     import * as _SchemaFactory from "models/schema-items/schema-item-factory";
     import { isValidObjectID } from "utils/utils";
     import * as permissions from "utils/permission-controllers";
-    import { AdminController } from "controllers/admin-controller";
-    import { BucketController } from "controllers/bucket-controller";
-    import { CommentsController } from "controllers/comments-controller";
-    import { CORSController } from "controllers/cors-controller";
-    import { EmailsController } from "controllers/emails-controller";
-    import { ErrorController } from "controllers/error-controller";
-    import { FileController } from "controllers/file-controller";
-    import { PageRenderer } from "controllers/page-renderer";
-    import { PostsController } from "controllers/posts-controller";
-    import { CategoriesController } from "controllers/categories-controller";
-    import { SessionController } from "controllers/session-controller";
-    import { StatsController } from "controllers/stats-controller";
-    import { UserController } from "controllers/user-controller";
-    import { AuthController } from "controllers/auth-controller";
-    export const Controller: typeof _Controller.Controller;
+    import { AdminSerializer } from "serializers/admin-serializer";
+    import { BucketSerializer } from "serializers/bucket-serializer";
+    import { CommentsSerializer } from "serializers/comments-serializer";
+    import { CORSSerializer } from "serializers/cors-serializer";
+    import { EmailsSerializer } from "serializers/emails-serializer";
+    import { ErrorSerializer } from "serializers/error-serializer";
+    import { FileSerializer } from "serializers/file-serializer";
+    import { PageSerializer } from "serializers/page-serializer";
+    import { PostsSerializer } from "serializers/posts-serializer";
+    import { CategoriesSerializer } from "serializers/categories-serializer";
+    import { SessionSerializer } from "serializers/session-serializer";
+    import { StatsSerializer } from "serializers/stats-serializer";
+    import { UserSerializer } from "serializers/user-serializer";
+    import { AuthSerializer } from "serializers/auth-serializer";
+    export const Controller: typeof _Controller.Serializer;
     export const Model: typeof _Models.Model;
     export const SchemaFactory: typeof _SchemaFactory;
-    export const UserManager: typeof users.UserManager;
-    export const BucketManager: typeof bucketManager.BucketManager;
     export const isValidID: typeof isValidObjectID;
     export const authentication: typeof permissions;
     export const controllers: {
-        admin: typeof AdminController;
-        auth: typeof AuthController;
-        posts: typeof PostsController;
-        categories: typeof CategoriesController;
-        comments: typeof CommentsController;
-        cors: typeof CORSController;
-        email: typeof EmailsController;
-        error: typeof ErrorController;
-        file: typeof FileController;
-        bucket: typeof BucketController;
-        renderer: typeof PageRenderer;
-        session: typeof SessionController;
-        stats: typeof StatsController;
-        user: typeof UserController;
+        users: users.UsersController;
+        buckets: bucketManager.BucketsController;
+    };
+    export const serializers: {
+        admin: typeof AdminSerializer;
+        auth: typeof AuthSerializer;
+        posts: typeof PostsSerializer;
+        categories: typeof CategoriesSerializer;
+        comments: typeof CommentsSerializer;
+        cors: typeof CORSSerializer;
+        email: typeof EmailsSerializer;
+        error: typeof ErrorSerializer;
+        file: typeof FileSerializer;
+        bucket: typeof BucketSerializer;
+        renderer: typeof PageSerializer;
+        session: typeof SessionSerializer;
+        stats: typeof StatsSerializer;
+        user: typeof UserSerializer;
     };
 }

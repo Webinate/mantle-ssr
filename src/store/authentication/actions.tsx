@@ -1,7 +1,7 @@
 import { ActionCreator } from '../actions-creator';
 import { IRootState } from '../';
 import { post, get, apiUrl, ClientError } from '../../utils/httpClients';
-import { AuthTokens, IResponse, IUserEntry } from 'modepress';
+import { AuthTokens, ISimpleResponse, IUserEntry } from 'modepress';
 import { push } from 'react-router-redux';
 
 // Action Creators
@@ -26,7 +26,7 @@ export function login( authToken: AuthTokens.Login.Body ) {
 
     }
     catch ( e ) {
-      dispatch( ActionCreators.authenticationError.create( ( e as ClientError<IResponse> ).json.message ) );
+      dispatch( ActionCreators.authenticationError.create( ( e as ClientError<ISimpleResponse> ).json.message ) );
     }
   }
 }
@@ -40,7 +40,7 @@ export function register( authToken: AuthTokens.Register.Body ) {
       dispatch( ActionCreators.authenticationError.create( resp.message ) );
     }
     catch ( e ) {
-      dispatch( ActionCreators.authenticationError.create( ( e as ClientError<IResponse> ).json.message ) );
+      dispatch( ActionCreators.authenticationError.create( ( e as ClientError<ISimpleResponse> ).json.message ) );
     }
   }
 }
@@ -54,7 +54,7 @@ export function logout() {
 
     }
     catch ( e ) {
-      dispatch( ActionCreators.authenticationError.create( ( e as ClientError<IResponse> ).json.message ) );
+      dispatch( ActionCreators.authenticationError.create( ( e as ClientError<ISimpleResponse> ).json.message ) );
     }
   }
 }

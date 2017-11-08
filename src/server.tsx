@@ -13,7 +13,7 @@ import createHistory from 'history/createMemoryHistory';
 const ReactDOMServer = require( 'react-dom/server' );
 import { Controller } from 'modepress-api';
 import { IAuthReq, IClient } from 'modepress';
-import { authentication, controllers } from 'modepress-api';
+import { authentication, serializers } from 'modepress-api';
 import { MuiThemeProvider, getMuiTheme } from 'material-ui/styles';
 import Theme from './theme/mui-theme';
 import { ServerStyleSheet } from 'styled-components';
@@ -34,13 +34,13 @@ export default class MainController extends Controller {
   async initialize( app: express.Express, db: Db ) {
     await Promise.all( [
       super.initialize( app, db ),
-      new controllers.auth( {
+      new serializers.auth( {
         rootPath: apiUrl,
         accountRedirectURL: '/message',
         activateAccountUrl: '/auth/activate-account',
         passwordResetURL: '/reset-password'
       } ).initialize( app, db ),
-      new controllers.user( {
+      new serializers.user( {
         rootPath: apiUrl
       } ).initialize( app, db )
     ] );
