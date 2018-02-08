@@ -132,14 +132,6 @@ function runServer() {
 }
 
 /**
- * Updates the modepress definition file
- */
-function updateModepressDef() {
-  return gulp.src( '../modepress-api.d.ts' )
-    .pipe( gulp.dest( './src/types' ) );
-}
-
-/**
  * Builds any sass files
  */
 function buildSass() {
@@ -174,7 +166,6 @@ function initBrowserSync( callback ) {
   callback();
 }
 
-gulp.task( 'update-modepress-def', updateModepressDef );
 gulp.task( 'build-client', buildClient );
 gulp.task( 'build-server', buildServer );
 gulp.task( 'build', gulp.series( buildServer, gulp.parallel( lint, buildClient, buildSass, buildStatics ), ) );

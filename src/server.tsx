@@ -12,7 +12,7 @@ import { apiUrl } from './utils/httpClients';
 import createHistory from 'history/createMemoryHistory';
 const ReactDOMServer = require( 'react-dom/server' );
 import { Controller } from 'modepress-api';
-import { IAuthReq, IClient } from 'modepress';
+import { IAuthReq, IClient } from 'modepress-api';
 import { authentication, serializers } from 'modepress-api';
 import { MuiThemeProvider, getMuiTheme } from 'material-ui/styles';
 import Theme from './theme/mui-theme';

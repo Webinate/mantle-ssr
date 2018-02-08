@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { matchPath, match } from 'react-router';
 import { ActionCreators } from '../store/authentication/actions';
 import { ActionCreators as UserActions } from '../store/users/actions';
-import { IAuthReq } from 'modepress';
+import { IAuthReq } from 'modepress-api';
 import { controllers } from 'modepress-api';
 
 /**
@@ -21,7 +21,7 @@ export async function hydrate( req: IAuthReq ) {
   matches = matchPath( req.url, { path: '/dashboard/users' } );
   if ( matches ) {
     const users = await controllers.users.getUsers();
-    actions.push( UserActions.SetUsers.create( users.map( u => u.dbEntry ) ) );
+    actions.push( UserActions.SetUsers.create( users.data ) );
   }
 
   return actions;
