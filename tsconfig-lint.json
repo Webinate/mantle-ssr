@@ -21,6 +21,6 @@
     "src/**/*"
   ],
   "exclude": [
-    "src/types/modepress-api.d.ts"
+    "src/types/modepress.d.ts"
   ]
 }

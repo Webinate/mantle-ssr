@@ -3,7 +3,7 @@ import { matchPath, match } from 'react-router';
 import { ActionCreators } from '../store/authentication/actions';
 import { ActionCreators as UserActions } from '../store/users/actions';
 import { IAuthReq } from 'modepress';
-import { controllers } from 'modepress-api';
+import { controllers } from 'modepress';
 
 /**
  * This decorator populates the application state with data before the client loads.
@@ -20,8 +20,8 @@ export async function hydrate( req: IAuthReq ) {
   // Get users if neccessary
   matches = matchPath( req.url, { path: '/dashboard/users' } );
   if ( matches ) {
-    const users = await controllers.users.getUsers();
-    actions.push( UserActions.SetUsers.create( users.map( u => u.dbEntry ) ) );
+    const page = await controllers.users.getUsers();
+    actions.push( UserActions.SetUsers.create( page.data.map( u => u ) ) );
   }
 
   return actions;
