@@ -1,7 +1,7 @@
 import { ActionCreator } from '../actions-creator';
 import { IRootState } from '../';
 import { post, get, apiUrl, ClientError } from '../../utils/httpClients';
-import { AuthTokens, ISimpleResponse, IUserEntry } from 'modepress-api';
+import { AuthTokens, ISimpleResponse, IUserEntry } from 'modepress';
 import { push } from 'react-router-redux';
 
 // Action Creators
@@ -20,7 +20,7 @@ export function login( authToken: AuthTokens.Login.Body ) {
     dispatch( ActionCreators.isAuthenticating.create( true ) );
 
     try {
-      const resp = await post<AuthTokens.Login.Response>( `${apiUrl}/auth/login`, authToken );
+      const resp = await post<AuthTokens.Login.Response>( `${ apiUrl }/auth/login`, authToken );
       dispatch( ActionCreators.setUser.create( resp.user ? resp.user : null ) );
       dispatch( push( '/' ) );
 
@@ -36,7 +36,7 @@ export function register( authToken: AuthTokens.Register.Body ) {
     dispatch( ActionCreators.isAuthenticating.create( true ) );
 
     try {
-      const resp = await post<AuthTokens.Register.Response>( `${apiUrl}/auth/register`, authToken );
+      const resp = await post<AuthTokens.Register.Response>( `${ apiUrl }/auth/register`, authToken );
       dispatch( ActionCreators.authenticationError.create( resp.message ) );
     }
     catch ( e ) {
@@ -48,7 +48,7 @@ export function register( authToken: AuthTokens.Register.Body ) {
 export function logout() {
   return async function( dispatch: Function, getState: () => IRootState ) {
     try {
-      await get<AuthTokens.Logout.Response>( `${apiUrl}/auth/logout` );
+      await get<AuthTokens.Logout.Response>( `${ apiUrl }/auth/logout` );
       dispatch( ActionCreators.loggedOut.create( true ) );
       dispatch( push( '/login' ) );
 

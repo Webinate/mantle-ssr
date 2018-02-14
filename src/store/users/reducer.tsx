@@ -1,5 +1,5 @@
 import { ActionCreators, Action } from './actions';
-import { IUserEntry } from 'modepress-api';
+import { IUserEntry } from 'modepress';
 
 // State
 export type State = {

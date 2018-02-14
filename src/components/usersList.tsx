@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IUserEntry } from 'modepress-api';
+import { IUserEntry } from 'modepress';
 import { Table, TableHeader, TableBody, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
 
 type Props = {
@@ -22,7 +22,7 @@ export class UsersList extends React.PureComponent<Props, any> {
             {
               this.props.users.map( ( user, index ) => {
                 return (
-                  <TableRow key={`user-${index}`}>
+                  <TableRow key={`user-${ index }`}>
                     <TableRowColumn>
                       {user.username}
                     </TableRowColumn>
