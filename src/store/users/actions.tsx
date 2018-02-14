@@ -1,5 +1,5 @@
 import { ActionCreator } from '../actions-creator';
-import { IUserEntry, UserTokens } from 'modepress';
+import { IUserEntry, UserTokens } from 'modepress-api';
 import { IRootState } from '../';
 import { get, apiUrl } from '../../utils/httpClients';
 
@@ -18,7 +18,7 @@ export type Action = typeof ActionCreators[ keyof typeof ActionCreators ];
 export function getUsers() {
   return async function( dispatch: Function, getState: () => IRootState ) {
     dispatch( ActionCreators.SetUsersBusy.create( true ) );
-    const resp = await get<UserTokens.GetAll.Response>( `${ apiUrl }/users` );
+    const resp = await get<UserTokens.GetAll.Response>( `${apiUrl}/users` );
     dispatch( ActionCreators.SetUsers.create( resp.data ) );
   }
 }
