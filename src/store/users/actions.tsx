@@ -1,7 +1,7 @@
 import { ActionCreator } from '../actions-creator';
-import { IUserEntry, UserTokens } from 'modepress';
+import { IUserEntry } from 'modepress';
+import { users } from 'modepress/lib-frontend';
 import { IRootState } from '../';
-import { get, apiUrl } from '../../utils/httpClients';
 
 // Action Creators
 export const ActionCreators = {
@@ -18,7 +18,7 @@ export type Action = typeof ActionCreators[ keyof typeof ActionCreators ];
 export function getUsers() {
   return async function( dispatch: Function, getState: () => IRootState ) {
     dispatch( ActionCreators.SetUsersBusy.create( true ) );
-    const resp = await get<UserTokens.GetAll.Response>( `${ apiUrl }/users` );
+    const resp = await users.getAll( {} );
     dispatch( ActionCreators.SetUsers.create( resp.data ) );
   }
 }

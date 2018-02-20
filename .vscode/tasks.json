@@ -1,42 +1,27 @@
 {
-  "version": "0.1.0",
-  "command": "npm",
-  "isShellCommand": true,
+  "version": "2.0.0",
+  "type": "shell",
   "tasks": [
     {
-      "taskName": "build",
-      "isBuildCommand": true,
-      "showOutput": "always",
+      "label": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "problemMatcher": "$tsc",
-      "suppressTaskName": true,
-      "args": [
-        "run",
-        "build"
-      ]
+      "command": "npm run build"
     },
     {
-      "taskName": "watch server",
-      "isBuildCommand": false,
+      "label": "watch server",
       "isBackground": true,
-      "showOutput": "always",
       "problemMatcher": "$tsc",
-      "suppressTaskName": true,
-      "args": [
-        "run",
-        "watch-server"
-      ]
+      "command": "npm run watch-server"
     },
     {
-      "taskName": "watch client",
-      "isBuildCommand": false,
+      "label": "watch client",
       "isBackground": true,
-      "showOutput": "always",
       "problemMatcher": "$tsc",
-      "suppressTaskName": true,
-      "args": [
-        "run",
-        "watch-client"
-      ]
+      "command": "npm run watch-client"
     }
   ]
 }
