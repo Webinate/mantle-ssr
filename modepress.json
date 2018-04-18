@@ -9,7 +9,7 @@
   },
   "controllers": [
     {
-      "path": "dist/server/server.js"
+      "path": "src/server"
     }
   ]
 }
