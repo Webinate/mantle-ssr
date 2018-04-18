@@ -7,8 +7,8 @@ if ( !args.config || !fs.existsSync( args.config ) ) {
   process.exit();
 }
 
-const startup = require( '../../../dist/core/initialization/startup.js' );
-const utils = require( './utils.js' );
+const startup = require( '../../../src/core/initialization/startup' );
+const utils = require( './utils' );
 
 describe( 'Initialize Server', function() {
 

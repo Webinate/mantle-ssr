@@ -23,7 +23,8 @@
     "patch": "npm version patch --no-git-tag-version",
     "major": "npm version major --no-git-tag-version",
     "minor": "npm version minor --no-git-tag-version",
-    "start": "cd ../../ && node dist/main.js --config=config.json --numThreads=1 --logging=true --inspect=true",
+    "start-dev": "cd ../../ && ts-node src/main.ts --config=config.json --numThreads=1 --logging=true --inspect=true",
+    "start-server": "cd ../../ && ts-node src/main.ts --config=config.json --logging=true --inspect=true",
     "test": "mocha -t 100000 ./test/index.js --config=../../config.json --logging=false --runningTests=true --clientsFolder=../../clients/ --remotes.local.url=http://localhost:8001 --remotes.local.path=../../clients/modepress-ssr/test/media-uploads"
   },
   "homepage": "https://github.com/Webinate/modepress-ssr#readme",
